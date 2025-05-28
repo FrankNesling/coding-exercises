@@ -1,12 +1,5 @@
 #include <iostream>
 
-
-void swapNumbers(int* unsortedList, int indexA, int indexB) {
-    int tmp = unsortedList[indexB];
-    unsortedList[indexB] = unsortedList[indexA];
-    unsortedList[indexA] = tmp;
-}
-
 void merge(int* unsortedList, int start, int end) {
     int length = end - start + 1;
     int tmpList[length];
