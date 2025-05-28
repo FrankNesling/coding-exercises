@@ -3,7 +3,7 @@
 long long int getNthFibonacci(int n) {
     long long int a = 0;
     long long int b = 1;
-    long long int tmp
+    long long int tmp;
 
     std::cout << a;
 
