@@ -12,7 +12,7 @@ def binary_search(theList, begin, end, element):
     elif (element > theList[mid]):
         return binary_search(theList, mid + 1, end, element)
     elif (element == theList[mid]):
-        if (theList[mid-1] == theList[mid]):    # for duplicates, m-1>0 is guaranteed by the first if check
+        if (mid - 1 > 0 and theList[mid-1] == theList[mid]):
             return binary_search(theList, begin, mid-1, element)
         return mid
 
