@@ -3,10 +3,6 @@ import random
 def binary_search(theList, begin, end, element):
     mid = begin + int((end-begin)/2)
 
-    # print("\n")
-    # print(begin)
-    # print(mid)
-    # print(end)
     if (end - begin < 1):
         if (element == theList[mid]):
             return mid
