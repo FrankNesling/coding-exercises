@@ -43,7 +43,7 @@ int main() {
         std::cin >> numberBy3;
 
         while (numberBy3 < 0) {
-            std::cout << "Let's stay positive!";
+            std::cout << "Let's stay positive please!";
             std::cin >> numberBy3;
         }
 
