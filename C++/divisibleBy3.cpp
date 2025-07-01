@@ -48,7 +48,7 @@ int main() {
         }
 
         isDivisibleBy3 = divisibleBy3(numberBy3);
-        std::cout << "It is divisble by 3: " << (isDivisibleBy3 ? "true" : "false") << "\n";
+        std::cout << "It is divisble by 3: " << (isDivisibleBy3 ? "true" : "false") << "!\n";
     }
 
     return 0;
