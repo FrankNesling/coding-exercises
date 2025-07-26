@@ -1,21 +1,27 @@
 #include <iostream>
 #include <regex>
 #include <string>
+#include <stdexcept>
 
 class ComplexNumber {
 public:
     static char i;
     int real, imaginary;
-    smatch match;
+    std::smatch match;
+
+    ComplexNumber() {
+        real = 0;
+        imaginary = 0;
+    }
 
     ComplexNumber(int re, int im) {
         real = re;
         imaginary = im;
     }
 
-    ComplexNumber(string complexNumber) {
+    ComplexNumber(std::string complexNumber) {
         if (!isComplexNumber(complexNumber)) {
-            throw invalid_argument("Invalid complex number!");
+            throw std::invalid_argument("Invalid complex number!");
         }
 
         // real
@@ -28,13 +34,13 @@ public:
 
         // imaginary
         if (match[2].matched) {
-            string imagStr = match[2].str();
+            std::string imagStr = match[2].str();
 
             // trailing i
             imagStr.pop_back();
 
             // +i, -i => +1, -1
-            if (imagStr == "+" || imagStr == "-") {
+            if (imagStr == "+" || imagStr.empty() || imagStr == "-") {
                 imagStr += "1";
             }
 
@@ -43,42 +49,69 @@ public:
         else {
             imaginary = 0;
         }
-
     }
 
     static ComplexNumber addition(ComplexNumber a, ComplexNumber b) {
         return ComplexNumber(a.real + b.real, a.imaginary + b.imaginary);
     }
 
-    string toString() {
-        char sign = "";
-        string imaginePart = "";
+    std::string toString() {
+        char sign = '\0';
+        std::string imaginePart = "\0";
+        std::string realPart = "\0";
 
-        if (imaginary != 0) {
+        if (real == 0 && imaginary == 0) {
+            return std::string("0");
+        }
+        else if (imaginary == 0) {
+            return std::to_string(real);
+        }
+        else if (real == 0) {
             if (imaginary == 1) {
-                imaginePart = i;
+                return std::string(1, i);
             }
-            else if (imagine == -1) {
-                imaginePart = '-' + i;
+            else if (imaginary == -1) {
+                return std::string("-") + i;
             }
             else {
-                imaginePart = to_string(imaginary) + i;
-            }
-
-            if (imaginary > 0 || real != 0) {
-                sign = "+";
+                return std::to_string(imaginary) + i;
             }
         }
-        return to_string(real) + sign + imaginePart;
+        else {
+            realPart = std::to_string(real);
+
+            if (imaginary == 1) {
+                sign = '+';
+                imaginePart = i;
+            }
+            else if (imaginary == -1) {
+                sign = '-';
+                imaginePart = i;
+            }
+            else {
+                if (imaginary > 0) {
+                    sign = '+';
+                    imaginePart = std::to_string(imaginary) + i;
+                }
+                else if (imaginary < 0) {
+                    sign = '-';
+                    imaginePart = std::to_string(imaginary * -1) + i;
+                }
+            }
+
+            std::cout << "[" << realPart << "][" << sign << "][" << imaginePart << "]\n";
+
+            return realPart + sign + imaginePart;
+        }
     }
 
-    static bool isComplexNumber(string complexNumber) {        
+    bool isComplexNumber(std::string complexNumber) {
         if (complexNumber.empty()) {
             return false;
         }
 
-        regex pattern("^([+-]?[0-9]+)?([+-][0-9]*i)?$")
-        return regex_match(complexNumber, match, pattern);
+        std::regex pattern("^([+-]?[0-9]+(?![0-9]*i))?([+-]?[0-9]*i)?$");
+        return std::regex_match(complexNumber, match, pattern);
     }
 };
 
@@ -86,22 +119,21 @@ char ComplexNumber::i = 'i';
 
 
 int main() {
-    string a;
-    string b;
+    std::string a;
+    std::string b;
 
     ComplexNumber complex1;
     ComplexNumber complex2;
-
 
     while (true) {
         std::cout << "Your first complex number?: ";
         std::cin >> a;
 
         try {
-            complex1(a);
+            complex1 = ComplexNumber(a);
         }
-        catch (const invalid_argument& e) {
-            cout << "Error: " << e.what() << "\n";
+        catch (const std::invalid_argument& e) {
+            std::cout << "Error: " << e.what() << "\n";
             break;
         }
 
@@ -109,14 +141,14 @@ int main() {
         std::cin >> b;
 
         try {
-            complex2(b);
+            complex2 = ComplexNumber(b);
         }
-        catch (const invalid_argument& e) {
-            cout << "Error: " << e.what() << "\n";
+        catch (const std::invalid_argument& e) {
+            std::cout << "Error: " << e.what() << "\n";
             break;
         }
 
-        std::cout << "The sum is: " << ComplexNumber::addition(complex1, complex2);
+        std::cout << "The sum is: " << ComplexNumber::addition(complex1, complex2).toString() << "\n";
     }
 
     return 0;
