@@ -3,3 +3,9 @@
 **.exe
 **.txt
 **.obj
+**.pdb
+
+
+# RUST
+Rust/target
+Rust/Cargo.lock
