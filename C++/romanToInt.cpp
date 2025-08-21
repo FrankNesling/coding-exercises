@@ -2,6 +2,7 @@
 #include <map>
 using namespace std;
 
+// can be sped up with an initialized array instead of a map
 map<char, int> singleRomanValue = {
     { 'I', 1 },
     { 'V', 5 },
