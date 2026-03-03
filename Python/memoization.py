@@ -23,11 +23,13 @@ def mem_count(n, stepsizes, cache = {}):
 
 
 stepcount = int(input("How many stepsizes?\n"))
-stepsizes = []
+stepsizes = set(())
 
 print("Which stepsizes?")
 for k in range(stepcount):
-  stepsizes.append(int(input()))
+  next_stepsize = int(input())
+  if next_stepsize > 0:        
+    stepsizes.add(next_stepsize)
 
 n = int(input("How many steps?\n"))
 
@@ -38,6 +40,6 @@ print(f'Elapsed time: {end - start}')
 
 print("With memoization: ")
 start = time.time()
-print(mem_count(n, stepsizes))
+print(mem_count(n, list(stepsizes)))
 end = time.time()
 print(f'Elapsed time: {end - start}')
